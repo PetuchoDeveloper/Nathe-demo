@@ -9,15 +9,15 @@ import { cn } from '@/lib/utils';
 
 interface TextToSpeechButtonProps {
   textToSpeak: string;
-  lang?: string;
+  lang?: string; // e.g., 'nah' for Nahuatl, 'es-MX' for Spanish
   className?: string;
-  buttonSize?: "sm" | "default" | "icon" | "lg" | null; // Allow null for ShadCN Button types
-  buttonVariant?: "link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null; // Allow null for ShadCN Button types
+  buttonSize?: "sm" | "default" | "icon" | "lg" | null;
+  buttonVariant?: "link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null;
 }
 
 export function TextToSpeechButton({
   textToSpeak,
-  lang = 'es-MX', // Default to Spanish (Mexico) as a fallback for Nahuatl
+  lang = 'nah', // Default to 'nah', specific handling for Nahuatl/Spanish fallback
   className,
   buttonSize = "icon",
   buttonVariant = "ghost"
@@ -36,28 +36,34 @@ export function TextToSpeechButton({
     
     const setVoiceForUtterance = () => {
       const voices = window.speechSynthesis.getVoices();
-      let chosenVoice = voices.find(voice => voice.lang === lang);
-      
-      if (!chosenVoice) {
-        chosenVoice = voices.find(voice => voice.lang.startsWith('es-')); // Fallback to any Spanish
+      let chosenVoice;
+
+      if (lang === 'nah') {
+        // Try to find a Nahuatl-like voice or fallback to Spanish
+        chosenVoice = voices.find(voice => voice.lang.toLowerCase().startsWith('nah')) || 
+                      voices.find(voice => voice.lang.toLowerCase() === 'es-mx') ||
+                      voices.find(voice => voice.lang.toLowerCase().startsWith('es-'));
+      } else {
+        // For other languages, try to find exact match or prefix match
+        chosenVoice = voices.find(voice => voice.lang.toLowerCase() === lang.toLowerCase()) ||
+                      voices.find(voice => voice.lang.toLowerCase().startsWith(lang.toLowerCase().split('-')[0]));
       }
+      
       if (!chosenVoice) {
         chosenVoice = voices.find(voice => voice.default); // Fallback to default
       }
 
       if (chosenVoice) {
         u.voice = chosenVoice;
-        u.lang = chosenVoice.lang; // Use the actual lang of the chosen voice
+        u.lang = chosenVoice.lang; 
       } else {
-        u.lang = navigator.language || 'es-MX'; // Fallback lang if no voice found
+        u.lang = lang === 'nah' ? 'es-MX' : (navigator.language || lang); // Fallback lang if no voice found
       }
     };
 
     if (window.speechSynthesis.getVoices().length === 0) {
       window.speechSynthesis.onvoiceschanged = () => {
         setVoiceForUtterance();
-        // It's possible the utterance object needs to be re-assigned or updated
-        // if voices load after initial setup. For simplicity, we set it once.
       };
     } else {
       setVoiceForUtterance();
@@ -71,7 +77,6 @@ export function TextToSpeechButton({
     };
     setUtteranceObj(u);
 
-    // Cleanup function
     return () => {
       if (window.speechSynthesis) {
         window.speechSynthesis.cancel();
@@ -85,13 +90,19 @@ export function TextToSpeechButton({
 
     if (isSpeaking) {
       window.speechSynthesis.cancel();
-      setIsSpeaking(false); // Manually set state as onend might not fire immediately on cancel
+      setIsSpeaking(false); 
     } else {
-      // Ensure the utterance text is current if it could change
-      // utteranceObj.text = textToSpeak; // Re-assign text if textToSpeak can change independently of useEffect
       window.speechSynthesis.speak(utteranceObj);
     }
   }, [isSupported, utteranceObj, isSpeaking]);
+
+  const getTooltipText = () => {
+    let languageName = "text";
+    if (lang === 'nah') languageName = "Náhuatl (vía voz en Español)";
+    else if (lang === 'es-MX' || lang.startsWith('es')) languageName = "Español";
+    else languageName = lang;
+    return isSpeaking ? `Detener (${languageName})` : `Escuchar (${languageName})`;
+  }
 
   if (!isSupported) {
     return (
@@ -100,11 +111,11 @@ export function TextToSpeechButton({
           <TooltipTrigger asChild>
             <Button variant={buttonVariant ?? undefined} size={buttonSize ?? undefined} className={className} disabled>
               <AlertCircle className="h-4 w-4" />
-              <span className="sr-only">TTS Not Supported</span>
+              <span className="sr-only">TTS No Soportado</span>
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Text-to-speech is not supported.</p>
+            <p>La función de texto a voz no es compatible con este navegador.</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -123,14 +134,14 @@ export function TextToSpeechButton({
             variant={buttonVariant ?? undefined}
             size={buttonSize ?? undefined}
             onClick={handleSpeak}
-            className={cn("text-muted-foreground hover:text-accent-foreground p-1", className)} // Adjusted padding for icon buttons
+            className={cn("text-muted-foreground hover:text-accent-foreground p-1", className)}
             aria-label={isSpeaking ? "Stop speaking" : "Speak text"}
           >
             {isSpeaking ? <StopCircle className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>{isSpeaking ? "Stop speaking" : "Listen (Nahuatl via es-MX)"}</p>
+          <p>{getTooltipText()}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
