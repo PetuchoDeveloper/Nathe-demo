@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useRef, useEffect, type FormEvent } from 'react';
@@ -8,7 +9,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Send, MessageSquare, CheckCircle, AlertTriangle, Loader2 } from 'lucide-react';
 import { UserAvatar } from '@/components/layout/user-avatar';
-import { AppLogoIcon } from '@/components/icons/app-logo-icon'; // Using app logo for bot
+import { AppLogoIcon } from '@/components/icons/app-logo-icon';
+import { TextToSpeechButton } from '@/components/ui/text-to-speech-button';
 
 interface ChatMessage {
   id: string;
@@ -41,13 +43,13 @@ export function Chatbot({ lectureContent, lectureTitle }: ChatbotProps) {
     scrollToBottom();
   }, [messages]);
   
-  // Initial bot message
   useEffect(() => {
+    const initialGreeting = `Niltze! Ni nēchpactia nimitztēmachtīz. ¿Tlein monequi ticmatiz īpanpa "${lectureTitle}"? (Hello! I'm happy to teach you. What do you want to know about "${lectureTitle}"?)`;
     setMessages([
       {
         id: crypto.randomUUID(),
         sender: 'bot',
-        text: `Niltze! Ni nēchpactia nimitztēmachtīz. ¿Tlein monequi ticmatiz īpanpa "${lectureTitle}"? (Hello! I'm happy to teach you. What do you want to know about "${lectureTitle}"?)`,
+        text: initialGreeting,
         isValidNahuatl: true,
       }
     ]);
@@ -87,8 +89,8 @@ export function Chatbot({ lectureContent, lectureTitle }: ChatbotProps) {
       const errorMessage: ChatMessage = {
         id: crypto.randomUUID(),
         sender: 'bot',
-        text: 'Nimitztlajtlanilia माफी, amo nikmatki tlen oticchiuh. (I apologize, I did not understand what you did.)', // A generic error message in Nahuatl
-        isValidNahuatl: false, // Assuming error messages might not be perfectly validated
+        text: 'Nimitztlajtlanilia माफी, amo nikmatki tlen oticchiuh. (I apologize, I did not understand what you did.)', 
+        isValidNahuatl: false, 
       };
       setMessages((prevMessages) => [...prevMessages, errorMessage]);
     } finally {
@@ -96,15 +98,28 @@ export function Chatbot({ lectureContent, lectureTitle }: ChatbotProps) {
     }
   };
 
+  const nahuatlTutorText = "Nahuatl Tēmachtiani";
+  const askInstructionText = "Xitlajtlani nochi tlein ticnequi ticmatiz.";
+  const thinkingTextNahuatl = "Motlananquilia";
+  const inputPlaceholderNahuatl = "Xitlajtlani mōtlahtōl";
+
   return (
     <Card className="shadow-lg flex flex-col h-[600px] max-h-[70vh]">
-      <CardHeader>
-        <CardTitle className="font-headline text-xl flex items-center gap-2 text-primary">
-          <MessageSquare className="h-6 w-6" />
-          <span>Nahuatl Tēmachtiani (Nahuatl Tutor)</span>
-        </CardTitle>
-        <CardDescription>Xitlajtlani nochi tlein ticnequi ticmatiz. (Ask whatever you want to know.)</CardDescription>
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <CardTitle className="font-headline text-xl flex items-center gap-2 text-primary">
+            <MessageSquare className="h-6 w-6" />
+            <span>{nahuatlTutorText}</span>
+            <TextToSpeechButton textToSpeak={nahuatlTutorText} className="ml-1" buttonSize="sm"/>
+          </CardTitle>
+          <span className="text-xs text-muted-foreground">(Nahuatl Tutor)</span>
+        </div>
+        <div className="flex items-center">
+          <CardDescription className="flex-grow mr-2">{askInstructionText} (Ask whatever you want to know.)</CardDescription>
+           <TextToSpeechButton textToSpeak={askInstructionText} className="ml-auto" buttonSize="sm"/>
+        </div>
       </CardHeader>
+
       <CardContent className="flex-grow overflow-hidden p-0">
         <ScrollArea className="h-full p-4" ref={scrollAreaRef}>
           <div className="space-y-4">
@@ -127,7 +142,10 @@ export function Chatbot({ lectureContent, lectureTitle }: ChatbotProps) {
                       : 'bg-muted text-muted-foreground'
                   }`}
                 >
-                  <p className="text-sm">{msg.text}</p>
+                  <div className="flex items-start">
+                    <p className="text-sm flex-grow mr-2">{msg.text}</p>
+                    {msg.sender === 'bot' && <TextToSpeechButton textToSpeak={msg.text.split('(')[0].trim()} className="ml-auto flex-shrink-0" buttonSize="sm" />}
+                  </div>
                   {msg.sender === 'bot' && msg.isValidNahuatl !== undefined && (
                     <div className="mt-1 flex items-center text-xs">
                       {msg.isValidNahuatl ? (
@@ -152,25 +170,32 @@ export function Chatbot({ lectureContent, lectureTitle }: ChatbotProps) {
                     <AppLogoIcon className="h-8 w-8 text-primary" />
                   </div>
                 <div className="bg-muted text-muted-foreground rounded-lg p-3 shadow flex items-center">
-                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  <span className="text-sm italic">Motlananquilia... (Thinking...)</span>
+                  <div className="flex items-center flex-grow mr-2">
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    <span className="text-sm italic">{thinkingTextNahuatl}... (Thinking...)</span>
+                  </div>
+                  <TextToSpeechButton textToSpeak={thinkingTextNahuatl} className="ml-auto flex-shrink-0" buttonSize="sm" />
                 </div>
               </div>
             )}
           </div>
         </ScrollArea>
       </CardContent>
+
       <CardFooter className="p-4 border-t">
         <form onSubmit={handleSubmit} className="flex w-full items-center gap-2">
-          <Input
-            type="text"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            placeholder="Xitlajtlani mōtlahtōl... (Ask your question...)"
-            className="flex-grow"
-            disabled={isLoading}
-            aria-label="User question input"
-          />
+          <div className="flex-grow relative flex items-center">
+            <Input
+              type="text"
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+              placeholder={`${inputPlaceholderNahuatl}... (Ask your question...)`}
+              className="flex-grow pr-10" 
+              disabled={isLoading}
+              aria-label="User question input"
+            />
+            <TextToSpeechButton textToSpeak={inputPlaceholderNahuatl} className="absolute right-1 top-1/2 -translate-y-1/2" buttonSize="sm" />
+          </div>
           <Button type="submit" disabled={isLoading || !userInput.trim()} size="icon" className="bg-accent hover:bg-accent/90">
             {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
             <span className="sr-only">Send message</span>
