@@ -4,7 +4,7 @@ import { AppLayout } from '@/components/layout/app-layout';
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: 'Tlahtolli Yeknemiliztli',
+  title: 'Nathe',
   description: 'Educational app for indigenous learners of the Nahuatl language',
 };
 

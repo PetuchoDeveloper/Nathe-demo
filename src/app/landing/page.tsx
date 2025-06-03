@@ -101,8 +101,8 @@ export default function LandingPage() {
               </h2>
                <TextToSpeechButton textToSpeak={heroAppNameNahuatl} buttonSize="default" />
             </div>
-            <div className="flex justify-center items-center mb-4">
-              <p className="text-lg md:text-xl text-foreground max-w-2xl mx-auto mr-2">
+            <div className="flex justify-center items-center mb-4 ">
+              <p className="text-lg md:text-xl text-foreground max-w-2xl mx-auto mr-2 md:m-auto">
                 {heroSubtitleNahuatl}
               </p>
               <TextToSpeechButton textToSpeak={heroSubtitleNahuatl} />
@@ -184,12 +184,12 @@ export default function LandingPage() {
                     <p className="text-lg text-foreground mr-2">{whyNahuatlTextNahuatl1}</p>
                     <TextToSpeechButton textToSpeak={whyNahuatlTextNahuatl1} className="mt-1" />
                 </div>
-                <p className="text-md text-muted-foreground mb-4">{whyNahuatlTextEnglish1}</p>
+                <p className="text-md text-muted-foreground mb-4 text-center">{whyNahuatlTextEnglish1}</p>
                 <div className="flex items-start">
                     <p className="text-lg text-foreground mr-2">{whyNahuatlTextNahuatl2}</p>
                     <TextToSpeechButton textToSpeak={whyNahuatlTextNahuatl2} className="mt-1" />
                 </div>
-                <p className="text-md text-muted-foreground">{whyNahuatlTextEnglish2}</p>
+                <p className="text-md text-muted-foreground text-center">{whyNahuatlTextEnglish2}</p>
               </div>
               <div className="md:w-1/2">
                 <Image 
@@ -219,5 +219,7 @@ export default function LandingPage() {
     </div>
   );
 }
+
+    
 
     

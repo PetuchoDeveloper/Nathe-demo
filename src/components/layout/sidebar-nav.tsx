@@ -12,19 +12,20 @@ import { TextToSpeechButton } from '@/components/ui/text-to-speech-button';
 const navItems = [
   { href: '/', label: 'Dashboard', icon: Home, titleEnglish: 'Dashboard', isNahuatl: false },
   { href: '/lectures', label: 'Tēmachtīlli', icon: BookOpen, titleEnglish: 'Lectures', isNahuatl: true },
+  
   // Add more items as needed
 ];
 
 export function SidebarNav() {
   const pathname = usePathname();
-  const sidebarTitleNahuatl = "Tlahtolli";
+  const sidebarTitleNahuatl = "Nathe";
 
   return (
     <nav className="flex flex-col h-full">
       <div className="flex items-center gap-2 p-4 border-b border-sidebar-border group-data-[collapsible=icon]:justify-center">
           <AppLogoIcon className="h-8 w-8 fill-primary" />
           <div className="font-headline text-lg font-semibold text-sidebar-foreground group-data-[collapsible=icon]:hidden flex items-center">
-            <span>{sidebarTitleNahuatl}</span>
+            <span><a href='/landing'>{sidebarTitleNahuatl}</a></span>
             <TextToSpeechButton 
               textToSpeak={sidebarTitleNahuatl} 
               className="ml-1" 
