@@ -16,25 +16,25 @@ export default function DashboardPage() {
   const pageContent = {
     nahuatl: {
       langCode: 'nah',
-      welcomeTitle: "Niltze! Tlahtolli Yeknemiliztli",
-      welcomeSubtitle: "Ximomachtia Nahuatl īhuān tlapōhualiztli!",
+      welcomeTitle: "Niltze! Nathe",
+      welcomeSubtitle: "¡Ximomachti tlen ueli tlamantli!",
       learningWithLang: "Tīcmomachtiah īpanpa motlahtōl.",
       yourProgress: "Moixkopinal",
       overallProgressLabel: "Mochīntīn Moixkopinal:",
       keepUpText: "¡Ximocuītlahui! Ocachi tlamantli huitz.",
       lecturesTitle: "Tēmachtīlli",
       startLearning: "Ximomachtia",
-      welcomeParenthetical: "(Welcome!)",
-      learnParenthetical: "(Learn Nahuatl and mathematics!)",
-      learningParenthetical: "(We are learning with your language.)",
-      progressParenthetical: "(Your Progress)",
-      lecturesParenthetical: "(Lectures)",
-      startLearningParenthetical: "(Start Learning)",
+      welcomeParenthetical: "",
+      learnParenthetical: "",
+      learningParenthetical: "",
+      progressParenthetical: "",
+      lecturesParenthetical: "",
+      startLearningParenthetical: "",
     },
     spanish: {
       langCode: 'es-MX',
-      welcomeTitle: "¡Hola! Bienvenido a Tlahtolli Yeknemiliztli",
-      welcomeSubtitle: "¡Aprende Náhuatl y matemáticas!",
+      welcomeTitle: "¡Hola! Bienvenido a Nathe",
+      welcomeSubtitle: "¡Aprende cualquier cosa!",
       learningWithLang: "Estamos aprendiendo con tu idioma.",
       yourProgress: "Tu Progreso",
       overallProgressLabel: "Progreso General:",
@@ -93,7 +93,7 @@ export default function DashboardPage() {
           <h2 className="font-headline text-2xl text-primary flex-grow">{content.lecturesTitle} {content.lecturesParenthetical && <span className="text-sm text-muted-foreground">{content.lecturesParenthetical}</span>}</h2>
           <TextToSpeechButton textToSpeak={content.lecturesTitle} lang={content.langCode} className="ml-auto" buttonSize="sm" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 width-[100%]">
           {lectures.map((lecture) => (
             <Card key={lecture.id} className="hover:shadow-xl transition-shadow duration-300">
               <CardHeader>
@@ -101,8 +101,8 @@ export default function DashboardPage() {
                   {lecture.icon === "Apple" && <Zap className="h-8 w-8 text-primary" data-ai-hint="fruit mathematics"/>}
                   {lecture.icon === "Feather" && <Zap className="h-8 w-8 text-primary" data-ai-hint="feather subtraction"/>}
                   {!lecture.icon && <BookOpen className="h-8 w-8 text-primary" />}
-                  <CardTitle className="font-headline text-xl text-primary flex items-center flex-grow">
-                    <span className="truncate mr-1">{currentLanguage === 'nahuatl' ? lecture.titleNahuatl : lecture.titleEnglish}</span>
+                  <CardTitle className="font-headline text-xl text-primary flex items-center flex-grow w-auto text-wrap">
+                    <span className="truncate mr-1 text-wrap flex flex-wrap">{currentLanguage === 'nahuatl' ? lecture.titleNahuatl : lecture.titleEnglish}</span>
                     <TextToSpeechButton 
                         textToSpeak={currentLanguage === 'nahuatl' ? lecture.titleNahuatl : lecture.titleEnglish} 
                         lang={currentLanguage === 'nahuatl' ? 'nah' : 'en'} // Assuming English titles for Spanish mode for now
@@ -111,7 +111,7 @@ export default function DashboardPage() {
                     />
                   </CardTitle>
                  </div>
-                <CardDescription>{lecture.titleEnglish}</CardDescription>
+                
               </CardHeader>
               <CardContent>
                 <Link href={`/lectures/${lecture.id}`} passHref>

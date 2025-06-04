@@ -23,9 +23,9 @@ export default function LandingPage() {
       heroAppName: "Nathe", // App name in Nahuatl for landing
       heroSubtitle: "Ximomachtia Nahuatl īhuān tlapōhualiztli tlatlamantli.",
       heroCta: "Ximpēhua Axkan!",
-      heroCtaSub: "(Start Now!)",
+      heroCtaSub: "",
       featuresTitle: "Tlein Tiquittāz?",
-      featuresTitleSub: "(What Will You Find?)",
+      featuresTitleSub: "",
       feature1Title: "Tēmachtīlli Tēāhuiltiani",
       feature1Desc: "Timomachtīz Nahuatl īca tēmachtīlli tlachīhualiztli.",
       feature2Title: "Nahuatl Tlahtōlnāmiquiliztli",
@@ -33,13 +33,14 @@ export default function LandingPage() {
       feature3Title: "Tlapōhualiztli īpan Nahuatl",
       feature3Desc: "Ximomachtia tlapōhualiztli īpan monāntlahtōl.",
       whyNahuatlTitle: "Ma Tiktlazohtlacan Totlahtōl",
-      whyNahuatlTitleSub: "(Let's Cherish Our Language)",
+      whyNahuatlTitleSub: "",
       whyNahuatlText1: "Nahuatl cē tlahtōlli chicāhuac īhuān huehcāuhtiliztli.",
       whyNahuatlText2: "Timitztlālīliah ximomachtia īhuān xictlazohtla.",
-      footerText: "© 2024 Tlahtolli Yeknemiliztli. Mochi tlamachtīliztli īpampa.",
-      footerTextSub: "(All rights reserved.)",
+      footerText: "© 2024 Nathe. Mochi tlamachtīliztli īpampa.",
+      footerTextSub: "",
       switchToLangText: "Ver en Español",
       currentLangName: "Nāhuatl",
+      heroSubSubtitle: "Ximomachti kenijkatsa uan kanke tijneki!",
     },
     spanish: {
       langCode: 'es-MX',
@@ -53,17 +54,18 @@ export default function LandingPage() {
       feature1Title: "Lecciones Interactivas",
       feature1Desc: "Aprende Náhuatl con lecciones dinámicas que hacen el aprendizaje divertido y efectivo.",
       feature2Title: "Chatbot en Náhuatl",
-      feature2Desc: "Practica tus habilidades de conversación y obtén ayuda instantánea de nuestro tutor de Náhuatl con IA.",
+      feature2Desc: "Practica tus habilidades, aprende, y obtén ayuda instantánea de nuestro tutor potenciado con IA.",
       feature3Title: "Matemáticas en Náhuatl",
-      feature3Desc: "Explora conceptos matemáticos explicados completamente en Náhuatl.",
+      feature3Desc: "Explora conceptos basicos explicados completamente en Náhuatl.",
       whyNahuatlTitle: "Atesoremos Nuestro Idioma",
       whyNahuatlTitleSub: "",
       whyNahuatlText1: "El Náhuatl es un idioma de fortaleza e historia.",
       whyNahuatlText2: "Te invitamos a aprenderlo, valorarlo y ayudar a mantenerlo vivo para las futuras generaciones.",
-      footerText: "© 2024 Tlahtolli Yeknemiliztli. Todos los derechos reservados.", // Main App name in footer
+      footerText: "© 2024 Nathe. Todos los derechos reservados.", // Main App name in footer
       footerTextSub: "",
       switchToLangText: "Kita īpan Nāhuatl",
       currentLangName: "Español",
+      heroSubSubtitle: "Aprende cómo y dónde quieras!",
     }
   };
 
@@ -71,7 +73,6 @@ export default function LandingPage() {
   const appNameForDisplayNahuatl = content.nahuatl.heroAppName;
   const appNameForDisplaySpanish = content.spanish.heroAppName;
   
-  const heroSubtitleEnglish = "Learn Nahuatl and mathematics in an engaging way.";
   const features = [
     {
       icon: BookOpen,
@@ -79,7 +80,6 @@ export default function LandingPage() {
       titleSpanish: content.spanish.feature1Title,
       descriptionNahuatl: content.nahuatl.feature1Desc,
       descriptionSpanish: content.spanish.feature1Desc,
-      descriptionEnglish: "Learn Nahuatl with engaging lessons that make learning fun and effective.",
       dataAiHint: "education book",
     },
     {
@@ -88,7 +88,6 @@ export default function LandingPage() {
       titleSpanish: content.spanish.feature2Title,
       descriptionNahuatl: content.nahuatl.feature2Desc,
       descriptionSpanish: content.spanish.feature2Desc,
-      descriptionEnglish: "Practice your conversation skills and get instant help from our AI-powered Nahuatl tutor.",
       dataAiHint: "chat ai",
     },
     {
@@ -97,12 +96,11 @@ export default function LandingPage() {
       titleSpanish: content.spanish.feature3Title,
       descriptionNahuatl: content.nahuatl.feature3Desc,
       descriptionSpanish: content.spanish.feature3Desc,
-      descriptionEnglish: "Explore mathematical concepts explained entirely in Nahuatl.",
       dataAiHint: "math numbers",
     },
   ];
-  const whyNahuatlTextEnglish1 = "Nahuatl is a language of strength and history.";
-  const whyNahuatlTextEnglish2 = "We invite you to learn it, cherish it, and help keep it alive for future generations.";
+  const whyNahuatlTextEnglish1 = "";
+  const whyNahuatlTextEnglish2 = "";
 
 
   return (
@@ -167,7 +165,7 @@ export default function LandingPage() {
               <TextToSpeechButton textToSpeak={currentContent.heroSubtitle} lang={currentContent.langCode} />
             </div>
             <p className="text-md text-muted-foreground max-w-2xl mx-auto mb-8">
-              {currentLanguage === 'nahuatl' ? heroSubtitleEnglish : ""}
+              {currentLanguage === 'nahuatl' ? content.nahuatl.heroSubSubtitle : content.spanish.heroSubSubtitle}
             </p>
             <Link href="/" passHref>
               <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg">
@@ -179,7 +177,7 @@ export default function LandingPage() {
           </div>
           <div className="mt-12 flex justify-center">
             <Image 
-              src="https://placehold.co/800x400.png" 
+              src="https://i.imgur.com/Rgqz8jg.png" 
               alt="Nahuatl learning visual representation" 
               width={800} 
               height={400} 
@@ -212,7 +210,6 @@ export default function LandingPage() {
                       </CardTitle>
                       <TextToSpeechButton textToSpeak={currentLanguage === 'nahuatl' ? feature.titleNahuatl : feature.titleSpanish} lang={currentContent.langCode} buttonSize="sm" />
                     </div>
-                    <CardDescription className="text-sm">{feature.descriptionEnglish}</CardDescription>
                   </CardHeader>
                   <CardContent className="text-center">
                     <div className="flex items-center justify-center text-center mb-1">
@@ -221,7 +218,6 @@ export default function LandingPage() {
                       </p>
                       <TextToSpeechButton textToSpeak={currentLanguage === 'nahuatl' ? feature.descriptionNahuatl : feature.descriptionSpanish} lang={currentContent.langCode} buttonSize="sm" />
                     </div>
-                    <p className="text-muted-foreground text-xs">{feature.descriptionEnglish}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -257,7 +253,7 @@ export default function LandingPage() {
               </div>
               <div className="md:w-1/2">
                 <Image 
-                  src="https://placehold.co/600x400.png" 
+                  src="https://i.imgur.com/IIqzXXG.jpeg" 
                   alt="Nahuatl heritage representation" 
                   width={600} 
                   height={400} 

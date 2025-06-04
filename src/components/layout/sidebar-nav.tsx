@@ -8,15 +8,30 @@ import { cn } from '@/lib/utils';
 import { SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar';
 import { AppLogoIcon } from '@/components/icons/app-logo-icon';
 import { TextToSpeechButton } from '@/components/ui/text-to-speech-button';
+import { useLanguage } from '@/contexts/language-context';
+import { nahuatlChatbot } from '@/ai/flows/nahuatl-chatbot';
 
-const navItems = [
-  { href: '/', label: 'Dashboard', icon: Home, titleEnglish: 'Dashboard', isNahuatl: false },
-  { href: '/lectures', label: 'Tēmachtīlli', icon: BookOpen, titleEnglish: 'Lectures', isNahuatl: true },
-  
-  // Add more items as needed
-];
 
 export function SidebarNav() {
+  const { currentLanguage } = useLanguage();
+  
+  const navLabels = {
+    nahuatl: {
+      dashboard: 'Tablero',
+      lectures: 'Tēmachtīlli'
+    },
+    spanish: {
+      dashboard: 'Inicio',
+      lectures: 'Lecciones'
+    }
+  }
+  const navItems = [
+    { href: '/', label: currentLanguage === 'nahuatl' ? navLabels.nahuatl.dashboard : navLabels.spanish.dashboard, icon: Home, titleEnglish: 'Dashboard', isNahuatl: false },
+    { href: '/lectures', label: currentLanguage === 'nahuatl' ? navLabels.nahuatl.lectures : navLabels.spanish.lectures, icon: BookOpen, titleEnglish: 'Lectures', isNahuatl: true },
+    
+    // Add more items as needed
+  ];
+  
   const pathname = usePathname();
   const sidebarTitleNahuatl = "Nathe";
 

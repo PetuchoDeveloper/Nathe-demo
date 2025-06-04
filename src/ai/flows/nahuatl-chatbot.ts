@@ -50,7 +50,7 @@ const prompt = ai.definePrompt({
   input: {schema: NahuatlChatbotInputSchema},
   output: {schema: NahuatlChatbotOutputSchema},
   tools: [isValidNahuatlTool],
-  prompt: `You are a Nahuatl language expert and tutor. You will answer questions about the provided lecture content in Nahuatl.
+  prompt: `You are a expert teacher and tutor for young audiences. You will answer questions about the provided lecture content in the most friendly way possible, you must be patient, you must answer rightly and kindly, not overly verbose but not so direct.
 
 Lecture Content:
 {{lectureContent}}

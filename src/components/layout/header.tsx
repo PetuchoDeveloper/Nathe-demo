@@ -13,7 +13,7 @@ import { SpanishFlagIcon } from '@/components/icons/spanish-flag-icon';
 import { NahuatlGlyphIcon } from '@/components/icons/nahuatl-glyph-icon';
 
 export function Header() {
-  const appTitleNahuatl = "Tlahtolli Yeknemiliztli";
+  const appTitleNahuatl = "Nathe";
   const { currentLanguage, toggleLanguage } = useLanguage();
   const pathname = usePathname();
 

@@ -18,9 +18,9 @@ export default function LecturesOverviewPage() {
       allLecturesTitle: "Mochīntīn Tēmachtīlli",
       chooseLessonText: "Xitlapehpēni cē tēmachtīliztli ompa tīcmpēhuaz.",
       startLearning: "Ximomachtia",
-      allLecturesParenthetical: "(All Lectures)",
-      chooseLessonParenthetical: "(Choose a lesson to begin.)",
-      startLearningParenthetical: "(Start Learning)",
+      allLecturesParenthetical: "",
+      chooseLessonParenthetical: "",
+      startLearningParenthetical: "",
     },
     spanish: {
       langCode: 'es-MX',
@@ -59,7 +59,7 @@ export default function LecturesOverviewPage() {
                 {lecture.icon === "Feather" && <Zap className="h-8 w-8 text-primary" data-ai-hint="feather logic"/>}
                 {!lecture.icon && <BookOpen className="h-8 w-8 text-primary" />}
                  <CardTitle className="font-headline text-xl text-primary flex items-center flex-grow">
-                    <span className="truncate mr-1">{currentLanguage === 'nahuatl' ? lecture.titleNahuatl : lecture.titleEnglish}</span>
+                    <span className="truncate mr-1 text-wrap">{currentLanguage === 'nahuatl' ? lecture.titleNahuatl : lecture.titleEnglish}</span>
                     <TextToSpeechButton 
                         textToSpeak={currentLanguage === 'nahuatl' ? lecture.titleNahuatl : lecture.titleEnglish} 
                         lang={currentLanguage === 'nahuatl' ? 'nah' : 'en'} // Assuming English titles for Spanish mode for now
@@ -68,7 +68,6 @@ export default function LecturesOverviewPage() {
                     />
                   </CardTitle>
               </div>
-              <CardDescription>{lecture.titleEnglish}</CardDescription>
             </CardHeader>
             <CardContent>
               <Link href={`/lectures/${lecture.id}`} passHref>

@@ -18,7 +18,7 @@ export const lectures: Lecture[] = [
   {
     id: '1',
     titleNahuatl: 'Tēmachtīliztli Cē: Tlapōhualiztli Xochitlakuali',
-    titleEnglish: 'Lesson 1: Counting Fruits',
+    titleEnglish: 'Leccion 1: Contando frutas',
     contentNahuatl: [
       'Niltze! In axkan timomachtizqueh tlapōhualiztli. ¿Kēnyi timopōhuah?',
       'Xiquita izozoh xochitlakuali. Maeh monamaca cē xōchihkualli īhuān oc cē xōchihkualli. ¿Kātlēci monamacah?',
@@ -50,7 +50,7 @@ export const lectures: Lecture[] = [
   {
     id: '2',
     titleNahuatl: 'Tēmachtīliztli Ōme: Tlatēktiliztli Āmantēcayōtl',
-    titleEnglish: 'Lesson 2: Subtracting Feathers',
+    titleEnglish: 'Leccion 2: Restando plumas',
     contentNahuatl: [
       'Niltze chicahualiztli! Āxcān, ma timomachtīcān tlatēktiliztli.',
       'Xiquita izozoh āmantēcayōtl. Intla onka mākuīlli āmantēcayōtl īhuān titlakuī ōme, ¿kātlēci āmantēcayōtl mocāhua?',
