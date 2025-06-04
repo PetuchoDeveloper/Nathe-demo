@@ -5,43 +5,22 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { BookOpen, MessageSquare, Calculator, Heart, Languages } from 'lucide-react';
+import { BookOpen, MessageSquare, Calculator, Heart } from 'lucide-react';
 import { TextToSpeechButton } from '@/components/ui/text-to-speech-button';
 import { AppLogoIcon } from '@/components/icons/app-logo-icon';
-import { useState, type SVGProps } from 'react';
-
-// Placeholder for Spanish Flag Icon
-function SpanishFlagIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 3" width="20" height="12" {...props} data-ai-hint="spain flag">
-      <rect width="5" height="3" fill="#C60B1E"/>
-      <rect width="5" height="1" y="1" fill="#FFC400"/>
-    </svg>
-  );
-}
-
-// Placeholder for a generic Nahuatl/Mexico related Icon
-function NahuatlGlyphIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20" height="20" fill="currentColor" {...props} data-ai-hint="aztec glyph">
-      <path d="M50 5 L60 20 L55 25 L65 40 L50 30 L35 40 L45 25 L40 20 Z M20 45 L40 55 L30 60 L45 70 L35 80 L25 70 L20 80 L10 70 L20 60 Z M80 45 L60 55 L70 60 L55 70 L65 80 L75 70 L80 80 L90 70 L80 60 Z M50 70 L60 85 L50 95 L40 85 Z" />
-    </svg>
-  );
-}
+import { useLanguage } from '@/contexts/language-context';
+import { SpanishFlagIcon } from '@/components/icons/spanish-flag-icon';
+import { NahuatlGlyphIcon } from '@/components/icons/nahuatl-glyph-icon';
 
 
 export default function LandingPage() {
-  const [currentLanguage, setCurrentLanguage] = useState<'nahuatl' | 'spanish'>('nahuatl');
-
-  const toggleLanguage = () => {
-    setCurrentLanguage(prevLang => prevLang === 'nahuatl' ? 'spanish' : 'nahuatl');
-  };
+  const { currentLanguage } = useLanguage();
 
   const content = {
     nahuatl: {
       langCode: 'nah',
       heroTitle: "Niltze! Ximopanōltih",
-      heroAppName: "Tlahtolli Yeknemiliztli",
+      heroAppName: "Nathe", // App name in Nahuatl for landing
       heroSubtitle: "Ximomachtia Nahuatl īhuān tlapōhualiztli tlatlamantli.",
       heroCta: "Ximpēhua Axkan!",
       heroCtaSub: "(Start Now!)",
@@ -60,13 +39,12 @@ export default function LandingPage() {
       footerText: "© 2024 Tlahtolli Yeknemiliztli. Mochi tlamachtīliztli īpampa.",
       footerTextSub: "(All rights reserved.)",
       switchToLangText: "Ver en Español",
-      switchToLangIcon: SpanishFlagIcon,
       currentLangName: "Nāhuatl",
     },
     spanish: {
       langCode: 'es-MX',
       heroTitle: "¡Hola! Bienvenido(a)",
-      heroAppName: "Palabra de Sabiduría", // App name can be kept or translated
+      heroAppName: "Nathe", // Keeping "Nathe" for consistency
       heroSubtitle: "Aprende Náhuatl y matemáticas de una manera atractiva.",
       heroCta: "¡Comienza Ahora!",
       heroCtaSub: "",
@@ -82,18 +60,17 @@ export default function LandingPage() {
       whyNahuatlTitleSub: "",
       whyNahuatlText1: "El Náhuatl es un idioma de fortaleza e historia.",
       whyNahuatlText2: "Te invitamos a aprenderlo, valorarlo y ayudar a mantenerlo vivo para las futuras generaciones.",
-      footerText: "© 2024 Palabra de Sabiduría. Todos los derechos reservados.",
+      footerText: "© 2024 Tlahtolli Yeknemiliztli. Todos los derechos reservados.", // Main App name in footer
       footerTextSub: "",
-      switchToLangText: "Kita īpan Nāhuatl", // View in Nahuatl
-      switchToLangIcon: NahuatlGlyphIcon,
+      switchToLangText: "Kita īpan Nāhuatl",
       currentLangName: "Español",
     }
   };
 
   const currentContent = content[currentLanguage];
-  const appNameForDisplay = content.nahuatl.heroAppName; // Keep original app name consistent
-
-  // Shared English descriptions (can be conditional too if needed)
+  const appNameForDisplayNahuatl = content.nahuatl.heroAppName;
+  const appNameForDisplaySpanish = content.spanish.heroAppName;
+  
   const heroSubtitleEnglish = "Learn Nahuatl and mathematics in an engaging way.";
   const features = [
     {
@@ -130,22 +107,25 @@ export default function LandingPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground font-body">
-      {/* Header */}
+      {/* Header specific to Landing Page - The global header will have the language toggle */}
       <header className="py-4 px-6 md:px-10 border-b border-border sticky top-0 bg-background/80 backdrop-blur-sm z-50">
         <div className="container mx-auto flex items-center justify-between">
           <Link href="/landing" className="flex items-center gap-2">
             <AppLogoIcon className="h-8 w-8 text-primary" />
             <div className="flex items-center">
-              <span className="font-headline text-xl font-semibold text-primary">{appNameForDisplay}</span>
-              <TextToSpeechButton textToSpeak={appNameForDisplay} lang={content.nahuatl.langCode} buttonSize="sm" className="ml-1" />
+              <span className="font-headline text-xl font-semibold text-primary">
+                {currentLanguage === 'nahuatl' ? appNameForDisplayNahuatl : appNameForDisplaySpanish}
+              </span>
+              <TextToSpeechButton 
+                textToSpeak={currentLanguage === 'nahuatl' ? appNameForDisplayNahuatl : appNameForDisplaySpanish} 
+                lang={currentContent.langCode} 
+                buttonSize="sm" 
+                className="ml-1" 
+              />
             </div>
           </Link>
           <div className="flex items-center gap-2">
-            <Button onClick={toggleLanguage} variant="outline" size="sm" className="text-sm">
-              <currentContent.switchToLangIcon className="mr-2 h-4 w-4" />
-              {currentContent.switchToLangText}
-              <TextToSpeechButton textToSpeak={currentContent.switchToLangText} lang={currentLanguage === 'nahuatl' ? content.spanish.langCode : content.nahuatl.langCode} buttonSize="sm" className="ml-1" />
-            </Button>
+             {/* Language toggle is now in the global Header component, only shown on /landing */}
             <Link href="/" passHref>
               <Button className="bg-accent hover:bg-accent/90 text-accent-foreground">
                   <span className="mr-1">{currentContent.heroCta}</span>
@@ -172,9 +152,13 @@ export default function LandingPage() {
             </div>
             <div className="flex justify-center items-center mb-6">
               <h2 className="font-headline text-3xl md:text-4xl font-semibold text-accent mr-2">
-                {appNameForDisplay}
+                {currentLanguage === 'nahuatl' ? appNameForDisplayNahuatl : appNameForDisplaySpanish}
               </h2>
-               <TextToSpeechButton textToSpeak={appNameForDisplay} lang={content.nahuatl.langCode} buttonSize="default" />
+               <TextToSpeechButton 
+                textToSpeak={currentLanguage === 'nahuatl' ? appNameForDisplayNahuatl : appNameForDisplaySpanish} 
+                lang={currentContent.langCode} 
+                buttonSize="default" 
+               />
             </div>
             <div className="flex justify-center items-center mb-4 ">
               <p className="text-lg md:text-xl text-foreground max-w-2xl mx-auto mr-2 md:m-auto">
@@ -183,7 +167,7 @@ export default function LandingPage() {
               <TextToSpeechButton textToSpeak={currentContent.heroSubtitle} lang={currentContent.langCode} />
             </div>
             <p className="text-md text-muted-foreground max-w-2xl mx-auto mb-8">
-              {currentLanguage === 'nahuatl' ? heroSubtitleEnglish : ""} {/* Show English only if primary is Nahuatl or adjust as needed */}
+              {currentLanguage === 'nahuatl' ? heroSubtitleEnglish : ""}
             </p>
             <Link href="/" passHref>
               <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg">
