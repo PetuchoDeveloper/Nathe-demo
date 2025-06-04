@@ -17,8 +17,6 @@ export function Header() {
   const { currentLanguage, toggleLanguage } = useLanguage();
   const pathname = usePathname();
 
-  const isLandingPage = pathname === '/landing';
-
   const toggleButtonContent = {
     nahuatl: {
       text: "Ver en Español",
@@ -33,8 +31,6 @@ export function Header() {
   };
 
   const currentToggleButton = currentLanguage === 'nahuatl' ? toggleButtonContent.nahuatl : toggleButtonContent.spanish;
-  const nextLanguageContent = currentLanguage === 'nahuatl' ? toggleButtonContent.spanish : toggleButtonContent.nahuatl;
-
 
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur md:px-6">
@@ -53,13 +49,11 @@ export function Header() {
         </h1>
       </Link>
       <div className="ml-auto flex items-center gap-2">
-        {isLandingPage && (
-           <Button onClick={toggleLanguage} variant="outline" size="sm" className="text-sm">
-              <currentToggleButton.icon className="mr-2 h-4 w-4" />
-              {currentToggleButton.text}
-              <TextToSpeechButton textToSpeak={currentToggleButton.text} lang={currentLanguage === 'nahuatl' ? 'es-MX' : 'nah'} buttonSize="sm" className="ml-1" />
-            </Button>
-        )}
+        <Button onClick={toggleLanguage} variant="outline" size="sm" className="text-sm">
+          <currentToggleButton.icon className="mr-2 h-4 w-4" />
+          {currentToggleButton.text}
+          <TextToSpeechButton textToSpeak={currentToggleButton.text} lang={currentLanguage === 'nahuatl' ? 'es-MX' : 'nah'} buttonSize="sm" className="ml-1" />
+        </Button>
         <UserAvatar />
       </div>
     </header>
